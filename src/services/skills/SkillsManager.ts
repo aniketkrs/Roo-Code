@@ -395,7 +395,9 @@ export class SkillsManager {
 			.join(" ")
 
 		// Build frontmatter with optional modeSlugs
-		const frontmatterLines = [`name: ${name}`, `description: ${trimmedDescription}`]
+		// Quote the description so YAML-special characters (e.g. colons) do not corrupt the frontmatter
+		const escapedDescription = trimmedDescription.replace(/\\/g, "\\\\").replace(/"/g, '\\"')
+		const frontmatterLines = [`name: ${name}`, `description: "${escapedDescription}"`]
 		if (modeSlugs && modeSlugs.length > 0) {
 			frontmatterLines.push(`modeSlugs:`)
 			for (const slug of modeSlugs) {
